@@ -70,6 +70,16 @@ angular.module('colorpicker.module', [])
             }
           },
           {
+              re: /0[xX]([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})/,
+              parse: function (execResult) {
+                return [
+                  parseInt(execResult[1], 16),
+                  parseInt(execResult[2], 16),
+                  parseInt(execResult[3], 16)
+                ];
+              }
+            },
+          {
             re: /#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])/,
             parse: function (execResult) {
               return [
@@ -102,6 +112,9 @@ angular.module('colorpicker.module', [])
         'hex': function () {
           return  this.toHex();
         },
+        '0xhex': function () {
+            return  this.to0XHex();
+          },
 
         // HSBtoRGB from RaphaelJS
         RGBtoHSB: function (r, g, b, a) {
@@ -184,7 +197,11 @@ angular.module('colorpicker.module', [])
         toHex: function (h, s, b, a) {
           var rgb = this.toRGB(h, s, b, a);
           return '#' + ((1 << 24) | (parseInt(rgb.r, 10) << 16) | (parseInt(rgb.g, 10) << 8) | parseInt(rgb.b, 10)).toString(16).substr(1);
-        }
+        },
+        to0XHex: function (h, s, b, a) {
+            var rgb = this.toRGB(h, s, b, a);
+            return '0x' + ((1 << 24) | (parseInt(rgb.r, 10) << 16) | (parseInt(rgb.g, 10) << 8) | parseInt(rgb.b, 10)).toString(16).substr(1);
+          }
       };
     }])
     .factory('Slider', ['Helper', function (Helper) {
@@ -520,3 +537,4 @@ angular.module('colorpicker.module', [])
         }
       };
     }]);
+0
